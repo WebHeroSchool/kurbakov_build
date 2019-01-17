@@ -1,0 +1,21 @@
+{
+  "name": "kurbakov_build",
+  "version": "1.0.0",
+  "description": "Yuriy Kurbakov's build",
+  "main": "index.js",
+  "scripts": {
+    "hello": "echo \"hello\"",
+    "create": "mkdir build",
+    "remove": "rm -rf build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebHeroSchool/kurbakov_build.git"
+  },
+  "author": "Yuriy Kurbakov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WebHeroSchool/kurbakov_build/issues"
+  },
+  "homepage": "https://github.com/WebHeroSchool/kurbakov_build#readme"
+}
