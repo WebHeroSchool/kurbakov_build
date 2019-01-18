@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/WebHeroSchool/kurbakov_build/issues"
   },
-  "homepage": "https://github.com/WebHeroSchool/kurbakov_build#readme"
+  "homepage": "https://github.com/WebHeroSchool/kurbakov_build#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
 }
