@@ -65,5 +65,8 @@ gulp.task('css', styles);
 gulp.task('js', scripts);
 gulp.task('css-watch', ['css'], reload);
 gulp.task('js-watch', ['js'], reload);
-gulp.task('browserSync', server)
-gulp.task('default', ['css', 'js', 'browserSync']);
+gulp.task('browserSync', server);
+gulp.task('build', ['css', 'js']);
+
+gulp.task('prod', ['build']);
+gulp.task('dev', ['build', 'browserSync']);
