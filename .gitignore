@@ -1,6 +1,6 @@
-.env
-.DS_Store
 .cache/
+.DS_Store
+.env
+build/
 dist/
 node_modules/
-build/
