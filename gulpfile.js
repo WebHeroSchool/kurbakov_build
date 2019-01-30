@@ -36,16 +36,16 @@ const paths = {
 const styles = () => {
   const plugins = [];
 
-	return gulp.src(paths.src.styles)
+  return gulp.src(paths.src.styles)
     .pipe(sourcemaps.init())
       .pipe(postcss(plugins))
       .pipe(concat(paths.names.styles))
       .pipe(gulpif(process.env.NODE_ENV === 'production', cssnano()))
     .pipe(sourcemaps.write())
-	  .pipe(gulp.dest(paths.dest.styles));
+    .pipe(gulp.dest(paths.dest.styles));
 };
 const scripts = () => {
-  gulp.src(paths.src.scripts)
+  return gulp.src(paths.src.scripts)
     .pipe(sourcemaps.init())
       .pipe(concat(paths.names.scripts))
       .pipe(babel({
