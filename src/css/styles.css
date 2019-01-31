@@ -1,4 +1,27 @@
 body {
+  background: var(--mainColor);
   margin: 0;
-  background: #666;
+  display: flex;
+}
+
+.div {
+  size: 500px;
+  color: #aaa #ccc;
+  margin: * auto;
+
+  &__btn {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+
+    &:hover {
+      cursor: pointer;
+      background: #0000ee;
+    }
+  }
+
+  &__pic {
+    size: 111px;
+    background: inline('kurbakov-0.jpg');
+  }
 }

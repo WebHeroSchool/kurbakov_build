@@ -9,6 +9,11 @@ const env = require('gulp-env');
 const gulpif = require('gulp-if');
 const clean = require('gulp-clean');
 const postcss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
+const nested = require('postcss-nested');
+const short = require('postcss-short');
+const assets = require('postcss-assets');
+const postcssPresetEnv = require('postcss-preset-env');
 
 // Env
 env({
@@ -34,14 +39,25 @@ const paths = {
 
 // Functions
 const styles = () => {
-  const plugins = [];
+  const plugins = [
+    autoprefixer({browsers: ['last 2 versions']}),
+    nested(),
+    short(),
+    assets({
+      loadPaths: ['src/images/'],
+      relativeTo: 'src/css/'
+    }),
+    postcssPresetEnv({
+      importFrom: './src/css/main.css'
+    })
+  ];
 
   return gulp.src(paths.src.styles)
     .pipe(sourcemaps.init())
       .pipe(postcss(plugins))
       .pipe(concat(paths.names.styles))
       .pipe(gulpif(process.env.NODE_ENV === 'production', cssnano()))
-    .pipe(sourcemaps.write())
+      .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.dest.styles));
 };
 const scripts = () => {

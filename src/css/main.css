@@ -1,3 +1,7 @@
+:root {
+  --mainColor: lightblue;
+}
+
 * {
   box-sizing: border-box;
 }
