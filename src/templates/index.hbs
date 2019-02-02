@@ -2,14 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Test</title>
+  <title>Template</title>
   <link rel="stylesheet" href="./build/css/index.min.css">
 </head>
 <body>
-  <div class="div">
-    <button class="div__btn">Hover me</button>
-    <div class="div__pic"></div>
-  </div>
+  {{> header}}
+
+  {{> sidebar}}
+
+  <div class="content">Content</div>
+
+  {{> footer}}
 
   <script src="./build/js/index.min.js"></script>
 </body>
