@@ -14,6 +14,9 @@ const nested = require('postcss-nested');
 const short = require('postcss-short');
 const assets = require('postcss-assets');
 const postcssPresetEnv = require('postcss-preset-env');
+const handlebars = require('gulp-compile-handlebars');
+const glob = require('glob');
+const rename = require('gulp-rename');
 
 // Env
 env({
@@ -24,17 +27,20 @@ env({
 // Paths
 const paths = {
   src: {
+    dir: 'src',
     styles: './src/css/*.css',
     scripts: './src/js/*.js'
   },
   dest: {
+    dir: 'build',
     styles: './build/css',
     scripts: './build/js'
   },
   names: {
     styles: 'index.min.css',
     scripts: 'index.min.js'
-  }
+  },
+  templates: 'src/templates/**/*.hbs'
 };
 
 // Functions
@@ -57,7 +63,7 @@ const styles = () => {
       .pipe(postcss(plugins))
       .pipe(concat(paths.names.styles))
       .pipe(gulpif(process.env.NODE_ENV === 'production', cssnano()))
-      .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.dest.styles));
 };
 const scripts = () => {
@@ -94,13 +100,29 @@ const cleaning = () => {
     .pipe(clean());
 };
 
+const compile = () => {
+  glob(paths.templates, (err, files) => {
+    if (!err) {
+      const options = {
+        ignorePartials: true,
+        batch: files.map(item => item.slice(0, item.lastIndexOf('/')))
+      };
+      return gulp.src(`${paths.src.dir}/templates/index.hbs`)
+        .pipe(handlebars({}, options))
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest('build'));
+    }
+  });
+};
+
 // Tasks
 gulp.task('css', styles);
 gulp.task('js', scripts);
+gulp.task('compile', compile);
 gulp.task('css-watch', ['css'], reload);
 gulp.task('js-watch', ['js'], reload);
 gulp.task('browserSync', server);
-gulp.task('build', ['css', 'js']);
+gulp.task('build', ['css', 'js', 'compile']);
 gulp.task('clean', cleaning);
 gulp.task('default', ['build']);
 gulp.task('dev', ['build', 'browserSync']);
