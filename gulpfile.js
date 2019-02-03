@@ -18,6 +18,9 @@ const handlebars = require('gulp-compile-handlebars');
 const glob = require('glob');
 const rename = require('gulp-rename');
 
+// Data
+const user = require('./src/templates/data/user.json');
+
 // Env
 env({
   file: '.env',
@@ -108,7 +111,7 @@ const compile = () => {
         batch: files.map(item => item.slice(0, item.lastIndexOf('/')))
       };
       return gulp.src(`${paths.src.dir}/templates/index.hbs`)
-        .pipe(handlebars({}, options))
+        .pipe(handlebars(user, options))
         .pipe(rename('index.html'))
         .pipe(gulp.dest('build'));
     }
