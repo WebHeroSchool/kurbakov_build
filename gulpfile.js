@@ -108,7 +108,11 @@ const compile = () => {
     if (!err) {
       const options = {
         ignorePartials: true,
-        batch: files.map(item => item.slice(0, item.lastIndexOf('/')))
+        batch: files.map(item => item.slice(0, item.lastIndexOf('/'))),
+        helpers: {
+          upper: word => `${word.slice(0, -1)}${word[word.length-1].toUpperCase()}`,
+          expo: (num, exp) => num ** exp 
+        }
       };
       return gulp.src(`${paths.src.dir}/templates/index.hbs`)
         .pipe(handlebars(user, options))
