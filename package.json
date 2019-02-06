@@ -4,6 +4,7 @@
   "description": "Yuriy Kurbakov's build",
   "main": "index.js",
   "scripts": {
+    "test": "gulp lint",
     "build": "gulp",
     "start": "gulp dev"
   },
@@ -38,10 +39,12 @@
     "postcss-assets": "^5.0.0",
     "postcss-nested": "^4.1.1",
     "postcss-preset-env": "^6.5.0",
-    "postcss-short": "^5.0.0"
+    "postcss-short": "^5.0.0",
+    "stylelint": "^9.10.1"
   },
   "dependencies": {
     "babel-eslint": "^10.0.1",
-    "gulp-eslint": "^5.0.0"
+    "gulp-eslint": "^5.0.0",
+    "postcss-reporter": "^6.0.1"
   }
 }
