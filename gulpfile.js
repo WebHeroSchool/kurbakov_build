@@ -17,9 +17,13 @@ const postcssPresetEnv = require('postcss-preset-env');
 const handlebars = require('gulp-compile-handlebars');
 const glob = require('glob');
 const rename = require('gulp-rename');
+const eslint = require('gulp-eslint');
 
 // Data
 const user = require('./src/templates/data/user.json');
+
+// ESLint
+const rulesScripts = require('./.eslintrc.json');
 
 // Env
 env({
@@ -43,7 +47,10 @@ const paths = {
     styles: 'index.min.css',
     scripts: 'index.min.js'
   },
-  templates: 'src/templates/**/*.hbs'
+  templates: 'src/templates/**/*.hbs',
+  lint: {
+    scripts: ['**/*.js', '!node_modules/**/*', '!build/**/*']
+  }
 };
 
 // Functions
@@ -63,26 +70,22 @@ const styles = () => {
 
   return gulp.src(paths.src.styles)
     .pipe(sourcemaps.init())
-      .pipe(postcss(plugins))
-      .pipe(concat(paths.names.styles))
-      .pipe(gulpif(process.env.NODE_ENV === 'production', cssnano()))
+    .pipe(postcss(plugins))
+    .pipe(concat(paths.names.styles))
+    .pipe(gulpif(process.env.NODE_ENV === 'production', cssnano()))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.dest.styles));
 };
 const scripts = () => {
   return gulp.src(paths.src.scripts)
     .pipe(sourcemaps.init())
-      .pipe(concat(paths.names.scripts))
-      .pipe(babel({
-        presets: ['@babel/env']
-      }))
-      .pipe(gulpif(process.env.NODE_ENV === 'production', uglify()))
+    .pipe(concat(paths.names.scripts))
+    .pipe(babel({
+      presets: ['@babel/env']
+    }))
+    .pipe(gulpif(process.env.NODE_ENV === 'production', uglify()))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.dest.scripts));
-};
-const watch = () => {
-  gulp.watch(paths.src.styles, styles);
-  gulp.watch(paths.src.scripts, scripts);
 };
 
 const server = () => {
@@ -110,7 +113,7 @@ const compile = () => {
         ignorePartials: true,
         batch: files.map(item => item.slice(0, item.lastIndexOf('/'))),
         helpers: {
-          upper: word => `${word.slice(0, -1)}${word[word.length-1].toUpperCase()}`,
+          upper: word => `${word.slice(0, -1)}${word[word.length - 1].toUpperCase()}`,
           expo: (num, exp) => num ** exp 
         }
       };
@@ -122,10 +125,17 @@ const compile = () => {
   });
 };
 
+const linter = () => {
+  return gulp.src(paths.lint.scripts)
+    .pipe(eslint(rulesScripts))
+    .pipe(eslint.format())
+};
+
 // Tasks
 gulp.task('css', styles);
 gulp.task('js', scripts);
 gulp.task('compile', compile);
+gulp.task('eslint', linter);
 gulp.task('css-watch', ['css'], reload);
 gulp.task('js-watch', ['js'], reload);
 gulp.task('browserSync', server);
