@@ -4,13 +4,13 @@
   "description": "Yuriy Kurbakov's build",
   "main": "index.js",
   "scripts": {
-    "test": "gulp lint && exit 1",
+    "test": "gulp lint",
     "build": "gulp",
     "start": "gulp dev"
   },
-  "pre-push": {
+  "pre-push": [
     "test"
-  },
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/WebHeroSchool/kurbakov_build.git"
