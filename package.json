@@ -8,7 +8,9 @@
     "build": "gulp",
     "start": "gulp dev"
   },
-  "prepush": "test",
+  "pre-push": {
+    "test"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/WebHeroSchool/kurbakov_build.git"
