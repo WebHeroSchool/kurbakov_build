@@ -4,10 +4,11 @@
   "description": "Yuriy Kurbakov's build",
   "main": "index.js",
   "scripts": {
-    "test": "gulp lint",
+    "test": "gulp lint && exit 1",
     "build": "gulp",
     "start": "gulp dev"
   },
+  "prepush": "test",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/WebHeroSchool/kurbakov_build.git"
@@ -40,6 +41,7 @@
     "postcss-nested": "^4.1.1",
     "postcss-preset-env": "^6.5.0",
     "postcss-short": "^5.0.0",
+    "pre-push": "^0.1.1",
     "stylelint": "^9.10.1"
   },
   "dependencies": {
