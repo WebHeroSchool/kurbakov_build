@@ -18,11 +18,14 @@ const handlebars = require('gulp-compile-handlebars');
 const glob = require('glob');
 const rename = require('gulp-rename');
 const eslint = require('gulp-eslint');
+const stylelint = require('stylelint');
+const reporter = require('postcss-reporter');
 
 // Data
 const user = require('./src/templates/data/user.json');
 
-// ESLint
+// Lint
+const rulesStyles = require('./.stylelintrc.json');
 const rulesScripts = require('./.eslintrc.json');
 
 // Env
@@ -49,6 +52,7 @@ const paths = {
   },
   templates: 'src/templates/**/*.hbs',
   lint: {
+    styles: ['**/*.css', '!node_modules/**/*', '!build/**/*'],
     scripts: ['**/*.js', '!node_modules/**/*', '!build/**/*']
   }
 };
@@ -125,17 +129,30 @@ const compile = () => {
   });
 };
 
-const linter = () => {
+const jslint = () => {
   return gulp.src(paths.lint.scripts)
     .pipe(eslint(rulesScripts))
     .pipe(eslint.format())
+};
+
+const csslint = () => {
+  return gulp.src(paths.lint.styles)
+    .pipe(postcss([
+      stylelint(rulesStyles),
+      reporter({
+        clearMessages: true,
+        throwError: false
+      })
+    ]));
 };
 
 // Tasks
 gulp.task('css', styles);
 gulp.task('js', scripts);
 gulp.task('compile', compile);
-gulp.task('eslint', linter);
+gulp.task('eslint', jslint);
+gulp.task('stylelint', csslint);
+gulp.task('lint', ['eslint', 'stylelint']);
 gulp.task('css-watch', ['css'], reload);
 gulp.task('js-watch', ['js'], reload);
 gulp.task('browserSync', server);
