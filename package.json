@@ -6,7 +6,8 @@
   "scripts": {
     "test": "gulp lint",
     "build": "gulp",
-    "start": "gulp dev"
+    "start": "gulp dev",
+    "postinstall": "npm run build"
   },
   "pre-push": [
     "test"
@@ -39,6 +40,7 @@
     "gulp-rename": "^1.4.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.1",
+    "postcss": "^6.0.23",
     "postcss-assets": "^5.0.0",
     "postcss-nested": "^4.1.1",
     "postcss-preset-env": "^6.5.0",

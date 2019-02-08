@@ -22,6 +22,5 @@ body {
 
   &__pic {
     size: 111px;
-    background: inline('kurbakov-0.jpg');
   }
 }
