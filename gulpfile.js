@@ -20,6 +20,7 @@ const rename = require('gulp-rename');
 const eslint = require('gulp-eslint');
 const stylelint = require('stylelint');
 const reporter = require('postcss-reporter');
+const imagemin = require('gulp-imagemin');
 
 // Data
 const user = require('./src/templates/data/user.json');
@@ -39,12 +40,16 @@ const paths = {
   src: {
     dir: 'src',
     styles: './src/css/*.css',
-    scripts: './src/js/*.js'
+    scripts: './src/js/*.js',
+    images: './src/images/*',
+    fonts: './src/fonts/*'
   },
   dest: {
     dir: 'build',
     styles: './build/css',
-    scripts: './build/js'
+    scripts: './build/js',
+    images: './build/images',
+    fonts: './build/fonts'
   },
   names: {
     styles: 'index.min.css',
@@ -95,12 +100,14 @@ const scripts = () => {
 const server = () => {
   browserSync.init({
     server: {
-      baseDir: './',
+      baseDir: './build',
     },
     notify: false
   });
-  gulp.watch(paths.src.styles, ['css-watch']);
-  gulp.watch(paths.src.scripts, ['js-watch']);
+  gulp.watch(paths.templates, ['compile']);
+  gulp.watch(paths.src.styles, ['css']);
+  gulp.watch(paths.src.scripts, ['js']);
+  gulp.watch(`${paths.dest.dir}/**/*`).on('change', reload);
 };
 
 const reload = () => browserSync.reload();
@@ -146,17 +153,28 @@ const csslint = () => {
     ]));
 };
 
+const imgs = () => {
+  return gulp.src(paths.src.images)
+    .pipe(imagemin())
+    .pipe(gulp.dest(paths.dest.images));
+};
+
+const fonts = () => {
+  return gulp.src(paths.src.fonts)
+    .pipe(gulp.dest(paths.dest.fonts));
+};
+
 // Tasks
 gulp.task('css', styles);
 gulp.task('js', scripts);
 gulp.task('compile', compile);
+gulp.task('images', imgs);
+gulp.task('fonts', fonts);
 gulp.task('eslint', jslint);
 gulp.task('stylelint', csslint);
 gulp.task('lint', ['eslint', 'stylelint']);
-gulp.task('css-watch', ['css'], reload);
-gulp.task('js-watch', ['js'], reload);
 gulp.task('browserSync', server);
-gulp.task('build', ['css', 'js', 'compile']);
+gulp.task('build', ['compile', 'css', 'js', 'images', 'fonts']);
 gulp.task('clean', cleaning);
 gulp.task('default', ['build']);
 gulp.task('dev', ['build', 'browserSync']);
