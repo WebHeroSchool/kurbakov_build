@@ -8,7 +8,6 @@ You must have installed: `node`, `npm`, `gulp`.
 1. `git clone https://github.com/WebHeroSchool/kurbakov_build.git`
 2. `cd kurbakov_build`
 3. `npm i`
-4. `npm run build`
 
 ---
 
